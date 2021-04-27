@@ -1,0 +1,21 @@
+.btn-search{
+    width: 15%;
+    background: #e9ecef;
+    text-align: center;
+    font-size: 76px;
+    cursor: pointer;
+    color:#6c757d;
+    height: 116px;
+}
+@media screen and (max-width: 680px) {
+    .btn-search{
+        width: 15%;
+        background: #e9ecef;
+        text-align: center;
+        font-size: 33px;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+}

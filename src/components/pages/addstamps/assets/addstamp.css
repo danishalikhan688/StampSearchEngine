@@ -1,0 +1,48 @@
+ 
+
+  
+ .add-stamp-box{
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 0 0 11px rgb(0 0 0 / 36%);
+    position: relative;
+    padding:18px;
+ margin-top: 30px !important
+ }
+ .breadcrumb-item{
+     text-align: center;
+ }
+ .form-label{
+    font-size: 15px;
+    letter-spacing: 1px;
+    font-weight: 600;
+ }
+
+ .main-label{
+    background: #343a40;
+    position: relative;
+    left: -24px;
+    padding: 10px 96px 10px 27px;
+    border-radius: 0px 33px 32px 0px;
+    color: white;
+    margin-top: 10px;
+ }
+ .preview-image-container{
+     width: 100px;
+     display: flex;
+     margin:10px; position: relative;
+ }
+ .preview-image{
+    width: inherit;  
+    border-radius: 10px;
+    margin-top: 10px;
+   
+ }
+ .scroll{
+    overflow: scroll
+ }
+ .btn-remove{
+    position: absolute;
+    right: 5px;
+    top: -11px; 
+    cursor: pointer;
+ }

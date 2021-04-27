@@ -1,0 +1,16 @@
+
+1: For running project your system must have install nodejs 
+you can download form this link https://nodejs.org/en/ than set the enviroment variable for node js 
+
+2: Unzip the folder and open cmd in that folder
+3 Run the following command 
+    -->  npm install 
+This command will install all the dependencies which is require for runing project
+4 after successfull instalation of dependencies run the following command for runing 
+    -->  npm start
+
+
+
+For hosting this project to server you should run the command in terminal 
+ npm run build
+ this will create a build folder in you root directory which has default index.html copy all the file in build folder and paste to your server
