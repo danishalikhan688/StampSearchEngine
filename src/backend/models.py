@@ -23,6 +23,14 @@ class UserModel(UserMixin, db.Model):
 
     def return_id(self, id):
         return id
+
+class JobModel(db.Model):
+    __tablename__ = 'jobs'
+
+    jid = db.Column(db.Integer, primary_key=True)
+    datetime = db.Column(db.String(80), nullable=True)
+    jobtype = db.Column(db.String(80), nullable=False)
+    uid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
  
 @login.user_loader
 def load_user(id):

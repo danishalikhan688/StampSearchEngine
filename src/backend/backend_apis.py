@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 from flask import Flask,render_template,request,redirect
 from flask_login import login_required, current_user, login_user, logout_user
-from models import UserModel,db,login
+from models import UserModel,db,login, JobModel
+import time
 
 app = Flask(__name__)
 app.secret_key = 'xyz'
@@ -44,9 +45,17 @@ def register():
         db.session.add(user)
         db.session.commit()
 
+        uid = user.id
+
+        dtime = time.asctime(time.localtime(time.time()))
+
+        job = JobModel(datetime=str(dtime), jobtype='Register', uid=uid)
+        db.session.add(job)
+        db.session.commit()
+
         return {'return': 'registered'}
 
-@app.route('/login', methods = ['POST', 'GET'])
+@app.route('/login', methods = ['POST'])
 def login():
     if current_user.is_authenticated:
         return {'return': 'already authenticated'}
@@ -67,6 +76,12 @@ def login():
             obj = UserModel.query.filter_by(id=int(uid)).one()
             firstName = obj.firstName
 
+            dtime = time.asctime(time.localtime(time.time()))
+
+            job = JobModel(datetime=str(dtime), jobtype='Login', uid=uid)
+            db.session.add(job)
+            db.session.commit()
+
             return {'return': 'logged in', 'firstName': firstName}
         else:
             return {'return': 'not logged in'}
@@ -74,6 +89,14 @@ def login():
 @app.route('/logout' ,methods=['GET'])
 @login_required
 def logout():
+
+    uid = current_user.id
+
+    dtime = time.asctime(time.localtime(time.time()))
+
+    job = JobModel(datetime=str(dtime), jobtype='Logout', uid=uid)
+    db.session.add(job)
+    db.session.commit()
 
     logout_user()
 
