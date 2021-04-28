@@ -38,7 +38,7 @@ alert(JSON.stringify(formData))
         <Row className="pt-3">
           <Col lg={12}>
             <ol className="breadcrumb mb-4 d-flex justify-content-center">
-              <h1 className="breadcrumb-item text-center active ">{EditType === "create" ? "Add Stamp Smaple 2 " : "Edit Stamp"}</h1>
+              <h1 className="breadcrumb-item text-center active ">{EditType === "create" ? "Add Stamp" : "Edit Stamp"}</h1>
             </ol>
           </Col>
           <Col md={12} sm={12} lg={12}>
@@ -69,13 +69,13 @@ alert(JSON.stringify(formData))
                   <Col md={12} sm={12} lg={9}>
                     <div className="form-group">
                       <label className="small form-label  mb-1" for="inputFirstName">    Stamp Number</label>
-                      <input className="form-control py-4  " id="inputEmailAddress" type="number" value={detailStamp?.year} placeholder="Enter   Stamp Number" />
+                      <input className="form-control py-4  " id="inputEmailAddress" type="number" value={detailStamp?.year} placeholder="Enter Stamp Number" />
                     </div>
                   </Col>
                   <Col md={12} sm={12} lg={9}>
                     <div className="form-group">
                       <label className="small form-label  mb-1" for="inputFirstName">  Face Value</label>
-                      <input className="form-control py-4  " id="inputEmailAddress" type="number" value={detailStamp?.year} placeholder="Enter  Face Value" />
+                      <input className="form-control py-4  " id="inputEmailAddress" type="number" value={detailStamp?.year} placeholder="Enter Face Value" />
                     </div>
                   </Col>
 
@@ -157,7 +157,7 @@ alert(JSON.stringify(formData))
                   <Col md={12} sm={12} lg={9}>
                     <div className="form-group">
                       <label className="small form-label  mb-1" for="inputFirstName">  Verient Number </label>
-                      <input className="form-control py-4  " id="inputEmailAddress" type="number" value={detailStamp?.year} placeholder="Enter  Verient Number " />
+                      <input className="form-control py-4  " id="inputEmailAddress" type="number" value={detailStamp?.year} placeholder="Enter Verient Number " />
                     </div>
                   </Col>
                 </Row>
