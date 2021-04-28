@@ -16,7 +16,6 @@ export const Registration = () => {
         evt.preventDefault();
 
         if (password === confirmedPassword) {
-            alert("Registered!")
 
             var response = await fetch(globalVars.urls.baseURL + '/register', {
                 method: 'post',
@@ -30,9 +29,13 @@ export const Registration = () => {
             })
 
             var data = await response.json()
-            console.log(data.return)
-
-            history.push('/login')
+            if(data.return === 'email already present'){
+                alert('Given email is already registered!')
+            }
+            else{
+                alert("Registered!")
+                history.push('/login')
+            }
         }
         else {
             alert("Passwords do not match!")

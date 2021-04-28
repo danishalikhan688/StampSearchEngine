@@ -1,7 +1,23 @@
 import React, { useContext } from "react";
 import Context from "../context/Context";
+import { useHistory } from "react-router";
+import { globalVars } from '../util/common';
 const Navbar = () => {
     const { addSideBarClass, setAddSideBarClass } = useContext(Context);
+    const history = useHistory();
+
+    const logoutClickHandler = async (evt) => {
+        evt.preventDefault();
+
+        var response = await fetch(globalVars.urls.baseURL+'/logout')
+
+        var data = await response.json()
+        
+        if(data.return === 'logged out'){
+            localStorage.clear();
+            history.push('/login')
+        }
+    }
 
     return (
         <>
@@ -25,7 +41,7 @@ const Navbar = () => {
                             <a className="dropdown-item" href="#">Settings</a>
                             <a className="dropdown-item" href="#">Activity Log</a>
                             <div className="dropdown-divider"></div>
-                            <a className="dropdown-item" href="login.html">Logout</a>
+                            <a className="dropdown-item" onClick={logoutClickHandler}>Logout</a>
                         </div>
                     </li>
                 </ul>

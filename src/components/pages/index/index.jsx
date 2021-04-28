@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row'
 import {Link} from "react-router-dom" 
 import DragDropImage from "../../basicComponents/draganddropimage";
 import   "./style.css"
+
 const Index = () => {  
   const [formData, setFormData] = useState({});
   const [showResult, setShowResult] = useState(false);
