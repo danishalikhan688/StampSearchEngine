@@ -98,7 +98,7 @@ export const State = (props) => {
     const [state, dispatch] = useReducer(Reducer, initialState);
     const [count, setCount] = useState(0)
     const [currency, setCurrency] = useState("USD")
- 
+
     const [hideCurrencyBar, setHideCurrencyBar] = useState({})
     const [checked, setChecked] = useState(true);
     const [colors, setColors] = useState({
@@ -109,8 +109,54 @@ export const State = (props) => {
         primary: "",
         secondary: ""
     });
-
-    const [addSideBarClass , setAddSideBarClass] = useState(true)
+    const [stamps, setStamps] = useState([
+        {
+            title: "xyz",
+            image: "./assets/img/1.jpg",
+            year: "1900",
+            country: "Pakistan",
+            stampNumber: "Xy769",
+            info: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum ea quam, porro deserunt, cupiditate quibusdam ullam dolore assumenda quas vel vitae exercitationem! Dignissimos nihil quos porro consequuntur, ullam beatae? Beatae?",
+            catalogAName: "Yvert",
+            catalogNumber: "123",
+            faceValue: "234fFD",
+            catalogYear: 1992,
+            price: 1234,
+            scottNumber: "SDF323",
+            verientNumber: "SDF323"
+        },
+        {
+            title: "abc",
+            image: "./assets/img/2.jpg",
+            year: "1903",
+            country: "France",
+            info: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum ea quam, porro deserunt, cupiditate quibusdam ullam dolore assumenda quas vel vitae exercitationem! Dignissimos nihil quos porro consequuntur, ullam beatae? Beatae?",
+            catalogName: "Yvert",
+            stampNumber: "Uy769",
+            catalogNumber: "321",
+            faceValue: "234fFD",
+            catalogYear: 1992,
+            price: 1234,
+            scottNumber: "SDF323",
+            verientNumber: "SDF323"
+        },
+        {
+            title: "qrs",
+            image: "./assets/img/1.jpg",
+            year: "1934",
+            country: "Germany",
+            info: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum ea quam, porro deserunt, cupiditate quibusdam ullam dolore assumenda quas vel vitae exercitationem! Dignissimos nihil quos porro consequuntur, ullam beatae? Beatae?",
+            catalogName: "Yvert",
+            stampNumber: "Py769",
+            catalogNumber: "234",
+            faceValue: "234fFD",
+            catalogYear: 1992,
+            price: 1234,
+            scottNumber: "SDF323",
+            verientNumber: "SDF323"
+        },
+    ])
+    const [addSideBarClass, setAddSideBarClass] = useState(true)
     const menuClick = (pagetitle) => {
         dispatch({
             type: MenuClick,
@@ -137,14 +183,15 @@ export const State = (props) => {
             count,
             setCount,
             setCurrency,
-            currency,    
+            currency,
             setHideCurrencyBar,
             hideCurrencyBar,
             setChecked,
             checked,
             setColors,
             colors,
-
+            setStamps,
+            stamps,
 
 
             // new  
