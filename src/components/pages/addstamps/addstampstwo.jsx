@@ -12,6 +12,8 @@ import { validateArrayObject, validateObject } from "../../../helpers/validation
 import { object } from "yup";
 import { globalVars } from '../../../util/common';
 import { useHistory } from "react-router";
+import { Button, Form } from 'react-bootstrap';
+// import axios from 'axios';
 
 const formSchema = Yup.object().shape({
   title: Yup.string().required("Required"),
@@ -67,21 +69,40 @@ const AddStamptwo = () => {
     setEditType("edit")
   }
 
+  var file;
+
+  const onFileChange = event => {
+
+    file = event.target.files[0]
+
+  };
+
+  const onFileUpload = async () => {
+  
+    const formData = new FormData();
+    formData.append(
+      "file",
+      file,
+      file.name
+    );
+
+    var response = await fetch(globalVars.urls.baseURL + '/addStampFile', {
+      method: 'post',
+      body: formData
+    })
+
+    var data = await response.json()
+
+  };
+
   var tempUploadFile = {}
 
-  // var to store the file
-  var uploadFile
+  const handleUpload = (files, fieldName) => {
 
-  const handleUpload = (files) => {
-
-    // uploadFile gets the file
-    uploadFile = files[0]
-    console.log(files[0])
-
-    // Appended to formData
     formData.append("file", files[0])
 
     tempUploadFile['myFile'] = files
+    tempUploadFile['type'] = fieldName
     setFileData(tempUploadFile)
   }
 
@@ -107,9 +128,8 @@ const AddStamptwo = () => {
         'Content-Type': 'multipart/form-data',
         'Accept': 'multipart/form-data'
       },
-      body: formData
+      body: formData,
     })
-
 
     // }
     // else {
@@ -300,8 +320,12 @@ const AddStamptwo = () => {
         )}
       </Formik>
 
-
-
+      <Form>
+        <Form.Group>
+          <Form.File onChange={onFileChange} />
+        </Form.Group>
+        <Button style={{ width: '30%' }} onClick={onFileUpload} variant="primary" type="submit">Upload</Button>
+      </Form>
 
       {/* <form  > */}
 

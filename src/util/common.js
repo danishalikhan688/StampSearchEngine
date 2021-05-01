@@ -1,5 +1,5 @@
 export const globalVars = {
     urls: {
-        baseURL: "http://0.0.0.0:5000/",
+        baseURL: "http://localhost:5000/",
     }
 };

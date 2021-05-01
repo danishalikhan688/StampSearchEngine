@@ -103,18 +103,26 @@ def logout():
 
     return {'return': 'logged out'}
 
-@app.route('/addStampFile', methods=['POST'])
+@app.route('/addStampFile', methods=['POST', 'GET'])
 def addStampFile():
+
+    if request.method == 'GET':
+        return {'return': 'hello'}
+    else:
     
-    print("Here")
-    
-    data = request.files['file']
+        print("Here")
 
-    print("Here")
+        data = request.files['file']
+        # data = request.get_json()
+        print(data)
 
-    data.save('yumpum.jpg')
+        # data = request.files['file']
 
-    return {'return': 'file'}
+        # print("Here")
+
+        data.save('yumpum.jpg')
+
+        return {'return': 'file'}
 
 @app.route('/addStamp', methods=['POST'])
 def addStamp():
