@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import "./assets/login.css";
 import { Link } from "react-router-dom"
 import { useHistory } from "react-router";
@@ -8,6 +9,23 @@ export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const history = useHistory();
+
+    useEffect(() => {
+        const checkAuth = async () => {
+
+            var response = await fetch(globalVars.urls.baseURL + '/checkAuth')
+            var data = await response.json()
+
+            if (data.return === 'already authenticated') {
+                history.push('/')
+            }
+        }
+
+        checkAuth()
+
+    }, [])
+
+
 
     const handleSubmit = async (evt) => {
         evt.preventDefault();
@@ -23,6 +41,7 @@ export const Login = () => {
         })
 
         var data = await response.json()
+        console.log(data.return)
         window.localStorage.setItem("firstName", data.firstName)
 
         if (data.return === 'logged in') {

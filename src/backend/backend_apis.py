@@ -3,6 +3,10 @@ from flask import Flask,render_template,request,redirect
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel,db,login, JobModel
 import time
+from PIL import Image
+import urllib.request as urllibRequest
+import requests
+# import urllib
 
 app = Flask(__name__)
 app.secret_key = 'xyz'
@@ -102,8 +106,36 @@ def logout():
 
     return {'return': 'logged out'}
 
+@app.route('/addStampFile', methods=['POST'])
+def addStampFile():
+    
+    print("Here")
+    
+    data = request.files['file']
+
+    print("Here")
+
+    data.save('yumpum.jpg')
+
+    return {'return': 'file'}
+
+@app.route('/addStamp', methods=['POST'])
+def addStamp():
+
+    data = request.get_json()
+
+    uid = current_user.id
+
+    dtime = time.asctime(time.localtime(time.time()))
+
+    job = JobModel(datetime=str(dtime), jobtype='Stamp Added', uid=uid)
+    db.session.add(job)
+    db.session.commit()
+
+    return {'return': 'stamp added'}
+
 @app.route('/test', methods=['GET'])
 def test():
     return {'return': 'test'}
 
-app.run(host='localhost', port=5000)
+app.run(host='0.0.0.0', port=5000)

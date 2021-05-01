@@ -33,8 +33,6 @@ const rejectStyle = {
 const DragDropImage = (props) => { 
   const [EditType, setEditType] = useState("create");
 
-
-
   const [files, setFiles] = useState([]);
 
   const onDrop = useCallback(acceptedFiles => {

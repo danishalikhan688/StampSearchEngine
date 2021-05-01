@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import DragDropImage from "../../basicComponents/draganddropimage";
 import { validateArrayObject, validateObject } from "../../../helpers/validation/form-validation";
 import { object } from "yup";
+import { globalVars } from '../../../util/common';
 
 const formSchema = Yup.object().shape({
   title: Yup.string().required("Required"),
@@ -31,6 +32,10 @@ const AddStamptwo = () => {
   const [detailStamp, setDetailStamp] = useState(StampModel);
   const [EditType, setEditType] = useState("create");
   const [fileData, setFileData] = useState({});
+
+  // FormData to uploadFile
+  const formData = new FormData();
+
   useEffect(() => {
     (localStorage.getItem("singleStamp") === undefined ||
       localStorage.getItem("singleStamp") === "undefined" ||
@@ -38,26 +43,60 @@ const AddStamptwo = () => {
       ? setDetailStamp(StampModel)
       : handleBeforeLoad();
   }, [])
+
   const handleBeforeLoad = () => {
     setDetailStamp(JSON.parse(localStorage.getItem("singleStamp")))
     setEditType("edit")
   }
 
   var tempUploadFile = {}
-  const handleUpload = (files, fieldName) => {
-    tempUploadFile[fieldName] = files
+
+  // var to store the file
+  var uploadFile
+
+  const handleUpload = (files) => {
+    
+    // uploadFile gets the file
+    uploadFile = files[0]
+    // console.log(uploadFile)
+
+    // Appended to formData
+    formData.append("file", uploadFile)
+
+    tempUploadFile['myFile'] = files
     setFileData(tempUploadFile)
   }
 
   const onSubmit = async (values) => {
-    if (validateObject(values) && Object.keys(fileData).length === 3) {
-      var apiData = { ...values, ...fileData }
-      alert("Your Post Method Data is here ")
-      alert(JSON.stringify(apiData))
-    }
-    else {
-      alert("Please fill all the fields and upload images")
-    }
+    // if (validateObject(values) && Object.keys(fileData).length === 1) {
+    var apiData = { ...values, ...fileData }
+
+    alert(JSON.stringify(apiData))
+
+    var response = await fetch(globalVars.urls.baseURL + '/addStamp', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(apiData)
+    })
+
+    // formData to be sent here, I get None object in the flask
+    var response = await fetch(globalVars.urls.baseURL + '/addStampFile', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Accept': 'multipart/form-data'
+      },
+      body: formData
+    })
+
+
+    // }
+    // else {
+    //   alert("Please fill all the fields and upload ateast one image")
+    // }
 
   };
   return (

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import "./assets/login.css";
 import { Link } from "react-router-dom"
 import { useHistory } from "react-router";
@@ -12,6 +13,21 @@ export const Registration = () => {
     const [confirmedPassword, setConfirmedPassword] = useState("");
     const history = useHistory();
 
+    useEffect(() => {
+        const checkAuth = async () => {
+
+            var response = await fetch(globalVars.urls.baseURL + '/checkAuth')
+            var data = await response.json()
+
+            if (data.return === 'already authenticated') {
+                history.push('/')
+            }
+        }
+
+        checkAuth()
+
+    }, [])
+
     const handleSubmit = async (evt) => {
         evt.preventDefault();
 
@@ -24,15 +40,15 @@ export const Registration = () => {
                     'Accept': 'application/json'
                 },
                 body:
-                    JSON.stringify({ 'email': email, 'firstName': firstName, 'lastName': lastName ,'password': password })
+                    JSON.stringify({ 'email': email, 'firstName': firstName, 'lastName': lastName, 'password': password })
 
             })
 
             var data = await response.json()
-            if(data.return === 'email already present'){
+            if (data.return === 'email already present') {
                 alert('Given email is already registered!')
             }
-            else{
+            else {
                 alert("Registered!")
                 history.push('/login')
             }
