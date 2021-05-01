@@ -1,14 +1,17 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-import {Link} from "react-router-dom" 
+import {Link} from "react-router-dom"
 import DragDropImage from "../../basicComponents/draganddropimage";
 import   "./style.css"
+import { globalVars } from '../../../util/common';
+import { useHistory } from "react-router";
 
 const Index = () => {  
   const [formData, setFormData] = useState({});
   const [showResult, setShowResult] = useState(false);
+  const history = useHistory();
   const [stamps, setStamps] = useState([
     {image:"./assets/img/1.jpg",
     year:"1900",
@@ -42,6 +45,22 @@ const Index = () => {
    setFormData(tempUploadFile)
    setShowResult(true)
   }
+
+  useEffect(() => {
+    const checkAuth = async () => {
+
+      var response = await fetch(globalVars.urls.baseURL + '/checkAuth')
+      var data = await response.json()
+
+      if (data.return === 'not authenticated') {
+        history.push('/registration')
+      }
+    }
+
+    checkAuth()
+
+  }, [])
+
   const handleSubmit =(e)=>{
 e.preventDefault()
 // alert(JSON.stringify(formData))

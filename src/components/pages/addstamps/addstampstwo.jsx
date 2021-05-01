@@ -11,6 +11,7 @@ import DragDropImage from "../../basicComponents/draganddropimage";
 import { validateArrayObject, validateObject } from "../../../helpers/validation/form-validation";
 import { object } from "yup";
 import { globalVars } from '../../../util/common';
+import { useHistory } from "react-router";
 
 const formSchema = Yup.object().shape({
   title: Yup.string().required("Required"),
@@ -32,11 +33,28 @@ const AddStamptwo = () => {
   const [detailStamp, setDetailStamp] = useState(StampModel);
   const [EditType, setEditType] = useState("create");
   const [fileData, setFileData] = useState({});
+  const history = useHistory();
 
   // FormData to uploadFile
   const formData = new FormData();
 
   useEffect(() => {
+    const checkAuth = async () => {
+
+      var response = await fetch(globalVars.urls.baseURL + '/checkAuth')
+      var data = await response.json()
+
+      if (data.return === 'not authenticated') {
+        history.push('/registration')
+      }
+    }
+
+    checkAuth()
+
+  }, [])
+
+  useEffect(() => {
+
     (localStorage.getItem("singleStamp") === undefined ||
       localStorage.getItem("singleStamp") === "undefined" ||
       localStorage.getItem("singleStamp") === null)
@@ -55,13 +73,13 @@ const AddStamptwo = () => {
   var uploadFile
 
   const handleUpload = (files) => {
-    
+
     // uploadFile gets the file
     uploadFile = files[0]
-    // console.log(uploadFile)
+    console.log(files[0])
 
     // Appended to formData
-    formData.append("file", uploadFile)
+    formData.append("file", files[0])
 
     tempUploadFile['myFile'] = files
     setFileData(tempUploadFile)

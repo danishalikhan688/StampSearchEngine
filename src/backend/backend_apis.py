@@ -3,10 +3,7 @@ from flask import Flask,render_template,request,redirect
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel,db,login, JobModel
 import time
-from PIL import Image
-import urllib.request as urllibRequest
 import requests
-# import urllib
 
 app = Flask(__name__)
 app.secret_key = 'xyz'
