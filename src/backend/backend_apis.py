@@ -110,7 +110,7 @@ def addStampFile():
         return {'return': 'hello'}
     else:
     
-        print("Here")
+        # print("Here")
 
         data = request.files['file']
         # data = request.get_json()
