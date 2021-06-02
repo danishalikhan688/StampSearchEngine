@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react"; 
-import Col from 'react-bootstrap/Col'  
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import { useDropzone } from 'react-dropzone';
 import "./assets/style.css"
@@ -30,17 +30,28 @@ const acceptStyle = {
 const rejectStyle = {
   borderColor: '#ff1744'
 };
-const DragDropImage = (props) => { 
+const DragDropImage = (props) => {
   const [EditType, setEditType] = useState("create");
 
   const [files, setFiles] = useState([]);
-
+  const [image, setImage] = useState([]);
   const onDrop = useCallback(acceptedFiles => {
-    props.handleUpload(acceptedFiles,props.fieldName)
+    props.handleUpload(acceptedFiles[0], props.fieldName)
+    // acceptedFiles.map(file => {
+    //   props.handleUpload(file[0], props.fieldName)
+    //   // const reader = new FileReader();
+    //   // reader.onload = function (e) {
+
+    //   // };
+    //   // return file;
+    // });
+
+
+    // props.handleUpload(acceptedFiles, props.fieldName)
     // console.log("this is new file ", JSON.stringify(acceptedFiles)); 
     setFiles(acceptedFiles.map(file => Object.assign(file, {
       preview: URL.createObjectURL(file)
-    })));   
+    })));
   }, []);
 
 
@@ -53,6 +64,7 @@ const DragDropImage = (props) => {
   } = useDropzone({
     onDrop,
     accept: 'image/jpeg, image/png, image/jpg'
+
   });
 
   const style = useMemo(() => ({
@@ -79,34 +91,35 @@ const DragDropImage = (props) => {
           }
         })
         setFiles(tempFiles)
-     
+
       }} className="btn-remove">X</span>
     </div>
   ));
-  
+
   // useEffect(() => () => {
-  //   props.handleUpload(files,props.fieldName)
+  //   props.handleUpload(files, props.fieldName)
+
   // }, [files]);
   useEffect(() => () => {
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
-  return ( 
-      <Row  >
-        <Col className=" " md={12} sm={12} lg={12}> 
-            <section>
-              <div {...getRootProps({ style })}>
-                <input {...getInputProps()} />
-                <div>Drag and drop stamp here.</div>
-                <div>or</div>
-                <div>Click to choose file</div> 
-              </div> 
-              <aside className={files.length > 4 ? "d-flex scroll" : "d-flex "} >
-                {thumbs}
-              </aside>
-            </section>
-       
-        </Col>
-      </Row>  
+  return (
+    <Row  >
+      <Col className=" " md={12} sm={12} lg={12}>
+        <section>
+          <div {...getRootProps({ style })}>
+            <input {...getInputProps()} />
+            <div>Drag and drop stamp here.</div>
+            <div>or</div>
+            <div>Click to choose file</div>
+          </div>
+          <aside className={files.length > 4 ? "d-flex scroll" : "d-flex "} >
+            {thumbs}
+          </aside>
+        </section>
+
+      </Col>
+    </Row>
   );
 };
 export default DragDropImage;

@@ -72,13 +72,13 @@ const AddStamptwo = () => {
   var file;
 
   const onFileChange = event => {
-
+    alert(event.target.files[0])
     file = event.target.files[0]
 
   };
 
   const onFileUpload = async () => {
-  
+
     const formData = new FormData();
     formData.append(
       "file",
@@ -86,50 +86,51 @@ const AddStamptwo = () => {
       file.name
     );
 
-    var response = await fetch(globalVars.urls.baseURL + '/addStampFile', {
-      method: 'post',
-      body: formData
-    })
+    // var response = await fetch(globalVars.urls.baseURL + '/addStampFile', {
+    //   method: 'post',
+    //   body: formData
+    // })
 
-    var data = await response.json()
+    // var data = await response.json()
 
   };
 
   var tempUploadFile = {}
 
-  const handleUpload = (files, fieldName) => {
-
-    formData.append("file", files[0])
-
-    tempUploadFile['myFile'] = files
-    tempUploadFile['type'] = fieldName
+  const handleUpload = (file, fieldName) => {
+    tempUploadFile['file'] = file
+    tempUploadFile['name'] = file.name
+    tempUploadFile['fieldName'] = fieldName
     setFileData(tempUploadFile)
   }
 
   const onSubmit = async (values) => {
     // if (validateObject(values) && Object.keys(fileData).length === 1) {
+    alert(fileData.file.name)
+    alert(fileData.name)
+    alert(fileData.fieldName)
     var apiData = { ...values, ...fileData }
 
     alert(JSON.stringify(apiData))
 
-    var response = await fetch(globalVars.urls.baseURL + '/addStamp', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(apiData)
-    })
+    // var response = await fetch(globalVars.urls.baseURL + '/addStamp', {
+    //   method: 'post',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Accept': 'application/json'
+    //   },
+    //   body: JSON.stringify(apiData)
+    // })
 
     // formData to be sent here, I get None object in the flask
-    var response = await fetch(globalVars.urls.baseURL + '/addStampFile', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Accept': 'multipart/form-data'
-      },
-      body: formData,
-    })
+    // var response = await fetch(globalVars.urls.baseURL + '/addStampFile', {
+    //   method: 'post',
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data',
+    //     'Accept': 'multipart/form-data'
+    //   },
+    //   body: formData,
+    // })
 
     // }
     // else {
