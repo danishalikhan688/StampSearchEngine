@@ -13,6 +13,7 @@ import { object } from "yup";
 import { globalVars } from '../../../util/common';
 import { useHistory } from "react-router";
 import { Button, Form } from 'react-bootstrap';
+import ImageDragAndDrop from "../../basicComponents/ImageDragAndDrop";
 // import axios from 'axios';
 
 const formSchema = Yup.object().shape({
@@ -99,15 +100,15 @@ const AddStamptwo = () => {
 
   const handleUpload = (file, fieldName) => {
     tempUploadFile['file'] = file
-    tempUploadFile['name'] = file.name
     tempUploadFile['fieldName'] = fieldName
     setFileData(tempUploadFile)
+    tempUploadFile = {}
   }
 
   const onSubmit = async (values) => {
-    // if (validateObject(values) && Object.keys(fileData).length === 1) {
+    // if (validateObject(values) && Object.keys(fileData).length === 1) { 
+    alert(fileData.file)
     alert(fileData.file.name)
-    alert(fileData.name)
     alert(fileData.fieldName)
     var apiData = { ...values, ...fileData }
 
@@ -233,19 +234,21 @@ const AddStamptwo = () => {
                       <Col className="mt-3" md={12} sm={12} lg={9}>
                         <div className="form-group">
                           <label className="small form-label  mb-1" for="CleanImage">  Clean Image Your Stamp</label>
-                          <DragDropImage handleUpload={handleUpload} fieldName={"uploadCleanStampImage"} />
+                          {/* <DragDropImage handleUpload={handleUpload} fieldName={"uploadCleanStampImage"} /> */}
+                          <ImageDragAndDrop handleUpload={handleUpload} fieldName={"uploadCleanStampImage"} />
                         </div>
                       </Col>
                       <Col md={12} sm={12} lg={9}>
                         <div className="form-group">
                           <label className="small form-label  mb-1" for="canceledImage">  Canceled Image Your Stamp</label>
-                          <DragDropImage handleUpload={handleUpload} fieldName={"uploadCancelStampImage"} />
+                          {/* <DragDropImage handleUpload={handleUpload} fieldName={"uploadCancelStampImage"} /> */}
+                          <ImageDragAndDrop handleUpload={handleUpload} fieldName={"uploadCancelStampImage"} />
                         </div>
                       </Col>
                       <Col md={12} sm={12} lg={9}>
                         <div className="form-group">
                           <label className="small form-label  mb-1" for="variationImage">     Variation Image Your Stamp</label>
-                          <DragDropImage handleUpload={handleUpload} fieldName={"uploadVariationStampImage"} />
+                          <ImageDragAndDrop handleUpload={handleUpload} fieldName={"uploadVariationStampImage"} />
                         </div>
                       </Col>
 
