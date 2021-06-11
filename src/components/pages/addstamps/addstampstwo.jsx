@@ -100,6 +100,7 @@ const AddStamptwo = () => {
 
   const handleUpload = (file, fieldName) => {
     tempUploadFile['file'] = file
+    tempUploadFile['filename'] = file.name
     tempUploadFile['fieldName'] = fieldName
     setFileData(tempUploadFile)
     tempUploadFile = {}
@@ -107,12 +108,39 @@ const AddStamptwo = () => {
 
   const onSubmit = async (values) => {
     // if (validateObject(values) && Object.keys(fileData).length === 1) { 
-    alert(fileData.file)
-    alert(fileData.file.name)
-    alert(fileData.fieldName)
-    var apiData = { ...values, ...fileData }
+    // alert(fileData.file)
+    // console.log(fileData.file)
+    // alert(fileData.file.name)
+    // console.log(fileData.file.name)
+    // alert(fileData.fieldName)
+    // console.log(fileData.fieldName)
+    // var apiData = { ...values, fileData }
+    // // alert(values)
+    // console.log(apiData)
+    // console.log(values['title'])
 
-    alert(JSON.stringify(apiData))
+
+    // alert(JSON.stringify(apiData))
+
+    const formData = new FormData();
+
+    formData.append("myFile",fileData.file)
+    formData.append("filename", fileData.file.name)
+    formData.append("fieldName", fileData.fieldName)
+
+    formData.append("title", values['title'])
+    formData.append("country", values['country'])
+    formData.append("year", values['year'])
+    formData.append("stampNumber", values['stampNumber'])
+    formData.append("faceValue", values['faceValue'])
+    formData.append("info", values['info'])
+
+    formData.append("catalogName", values['catalogName'])
+    formData.append("catalogNumber", values['catalogNumber'])
+    formData.append("catalogYear", values['catalogYear'])
+    formData.append("price", values['price'])
+    formData.append("scottNumber",values['scottNumber'])
+    formData.append("verientNumber",values['verientNumber'])
 
     // var response = await fetch(globalVars.urls.baseURL + '/addStamp', {
     //   method: 'post',
@@ -124,14 +152,15 @@ const AddStamptwo = () => {
     // })
 
     // formData to be sent here, I get None object in the flask
-    // var response = await fetch(globalVars.urls.baseURL + '/addStampFile', {
-    //   method: 'post',
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data',
-    //     'Accept': 'multipart/form-data'
-    //   },
-    //   body: formData,
-    // })
+    var response = await fetch(globalVars.urls.baseURL + '/addStampFile', {
+      method: 'post',
+      body: formData,
+    })
+
+    var data = await response.json()
+    if(data.return === 'stamp added'){
+      alert("Stamp Added!")
+    }
 
     // }
     // else {

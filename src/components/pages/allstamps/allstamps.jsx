@@ -17,13 +17,13 @@ const AllStamps = () => {
                 <h1 className="breadcrumb-item text-center active ">All Stamps</h1>
               </ol>
             </Col>
-            {stamps?.map((item, index) => (
+            {stamps.map((item, index) => (
               <Col key={Math.random()} md={6} lg={6} xl={4} sm={12}>
                 <div className="card "    >
                   <div className="card-image-container">
                     <img
                       className="card-image"
-                      src={item?.image}
+                      src={item.image}
                       alt="feature"
                     />
                     <Link

@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
 from flask import Flask,render_template,request,redirect
 from flask_login import login_required, current_user, login_user, logout_user
-from models import UserModel,db,login, JobModel
+from models import UserModel,db,login, JobModel, StampModel, CatalogModel, ImageModel
 import time
 import requests
+import cv2
+import numpy as np
 
 app = Flask(__name__)
 app.secret_key = 'xyz'
@@ -109,35 +111,55 @@ def addStampFile():
     if request.method == 'GET':
         return {'return': 'hello'}
     else:
-    
-        # print("Here")
 
-        data = request.files['file']
+        filestr = request.files['myFile'].read()
+        filename = request.form.get('filename')
+        fieldName = request.form.get('fieldName')
+
+        title = request.form.get('title')
+        country = request.form.get('country')
+        year = request.form.get('year')
+        stampNumber = request.form.get('stampNumber')
+        faceValue = request.form.get('faceValue')
+        info = request.form.get('info')
+
+        catalogName = request.form.get('catalogName')
+        catalogNumber = request.form.get('catalogNumber')
+        catalogYear = request.form.get('catalogYear')
+        price = request.form.get('price')
+        scottNumber = request.form.get('scottNumber')
+        verientNumber = request.form.get('verientNumber')
+
+        # print(title, country, year, stampNumber, faceValue, info, catalogName, catalogNumber, catalogYear, price, scottNumber, verientNumber)
+
+        #convert string data to numpy array
+        npimg = np.fromstring(filestr, np.uint8)
+        # convert numpy array to image
+        img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+
         # data = request.get_json()
-        print(data)
+        # print(data)
+        # cv2.imshow('',img)
+        # cv2.waitKey(0)
 
         # data = request.files['file']
 
         # print("Here")
 
-        data.save('yumpum.jpg')
+        # data.save('yumpum.png')
 
-        return {'return': 'file'}
+        # uid = current_user.id
 
-@app.route('/addStamp', methods=['POST'])
-def addStamp():
+        # dtime = time.asctime(time.localtime(time.time()))
 
-    data = request.get_json()
+        # stamp = StampModel()
 
-    uid = current_user.id
 
-    dtime = time.asctime(time.localtime(time.time()))
+        # job = JobModel(datetime=str(dtime), jobtype='Stamp Added', uid=uid)
+        # db.session.add(job)
+        # db.session.commit()
 
-    job = JobModel(datetime=str(dtime), jobtype='Stamp Added', uid=uid)
-    db.session.add(job)
-    db.session.commit()
-
-    return {'return': 'stamp added'}
+        return {'return': 'stamp added'}
 
 @app.route('/test', methods=['GET'])
 def test():

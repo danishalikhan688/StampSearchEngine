@@ -11,11 +11,10 @@ const ImageDragAndDrop = (props) => {
 
   const fileInputRef = useRef(null);
   const onFileInputChange = (event) => {
+    event.preventDefault();
     const { files } = event.target;
     props.handleUpload(files[0], props.fieldName)
   }
-
-
 
   return (
     <Row  >

@@ -30,27 +30,27 @@ const AddStamps = () => {
             </Col>
             <Col lg={6}>
               <div className="form-group">
-                <input className="form-control py-4  auth-input" id="inputEmailAddress" type="number" value={detailStamp?.year} placeholder="Enter Year" />
+                <input className="form-control py-4  auth-input" id="inputEmailAddress" type="number" value={detailStamp.year} placeholder="Enter Year" />
               </div>
             </Col>
             <Col lg={6}>
               <div className="form-group">
-                <input className="form-control py-4  auth-input" id="inputPassword"  value={detailStamp?.country} type="text" placeholder="Enter country" />
+                <input className="form-control py-4  auth-input" id="inputPassword"  value={detailStamp.country} type="text" placeholder="Enter country" />
               </div>
             </Col>
             <Col lg={6}>
               <div className="form-group">
-                <input className="form-control py-4  auth-input" id="inputPassword" type="text"  value={detailStamp?.numberInternal} placeholder="Enter Number(Internal)" />
+                <input className="form-control py-4  auth-input" id="inputPassword" type="text"  value={detailStamp.numberInternal} placeholder="Enter Number(Internal)" />
               </div>
             </Col>
             <Col lg={6}>
               <div className="form-group">
-                <input className="form-control py-4  auth-input" id="inputPassword" type="text"  value={detailStamp?.catalogAName} placeholder="Enter Catalog Name A" />
+                <input className="form-control py-4  auth-input" id="inputPassword" type="text"  value={detailStamp.catalogAName} placeholder="Enter Catalog Name A" />
               </div>
             </Col>
             <Col lg={6}>
               <div className="form-group">
-                <input className="form-control py-4  auth-input" id="inputPassword" type="number"  value={detailStamp?.catalogANumber} placeholder="Enter Catalog Number" />
+                <input className="form-control py-4  auth-input" id="inputPassword" type="number"  value={detailStamp.catalogANumber} placeholder="Enter Catalog Number" />
               </div>
             </Col>
             <Col lg={6}>
@@ -68,7 +68,7 @@ const AddStamps = () => {
             </Col>
             <Col lg={12}>
               <div className="form-group">
-                <input className="form-control py-4  auth-input" id="inputPassword"  value={detailStamp?.info} type="textarea" placeholder="Enter   Other Info" />
+                <input className="form-control py-4  auth-input" id="inputPassword"  value={detailStamp.info} type="textarea" placeholder="Enter   Other Info" />
               </div> 
             </Col>
            
