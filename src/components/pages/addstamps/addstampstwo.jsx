@@ -352,13 +352,13 @@ const AddStamptwo = () => {
           </form>
         )}
       </Formik>
-
+{/* 
       <Form>
         <Form.Group>
           <Form.File onChange={onFileChange} />
         </Form.Group>
         <Button style={{ width: '30%' }} onClick={onFileUpload} variant="primary" type="submit">Upload</Button>
-      </Form>
+      </Form> */}
 
       {/* <form  > */}
 

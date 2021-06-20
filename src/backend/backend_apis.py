@@ -3,12 +3,15 @@ from flask import Flask,render_template,request,redirect
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel,db,login, JobModel, StampModel, CatalogModel, ImageModel
 import time
-import requests
+# import requests
 import cv2
 import numpy as np
+from elasticsearch import Elasticsearch
+import lib_file
 
 app = Flask(__name__)
 app.secret_key = 'xyz'
+DIR_FOR_IMAGES = '/home/jawad/Desktop/StampSearchEngine/src/backend/ImagesFromUser/'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stampSearchEngine.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -16,6 +19,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 login.init_app(app)
 login.login_view = 'login'
+
+es = Elasticsearch([{'host':'localhost','port':9200}])
+ses = lib_file.SignatureES(es)
 
 @app.before_first_request
 def create_all():
@@ -115,6 +121,14 @@ def addStampFile():
         filestr = request.files['myFile'].read()
         filename = request.form.get('filename')
         fieldName = request.form.get('fieldName')
+        uid = current_user.id
+
+        image = ImageModel(image_name=filename, image_type=fieldName)
+        db.session.add(image)
+        db.session.commit()
+
+        obj = ImageModel.query.filter_by(image_name=filename).one()
+        imageid = obj.iid
 
         title = request.form.get('title')
         country = request.form.get('country')
@@ -123,6 +137,10 @@ def addStampFile():
         faceValue = request.form.get('faceValue')
         info = request.form.get('info')
 
+        stamp = StampModel(title=title, country=country, year=year, stamp_number=stampNumber, face_value=faceValue, info=info, uid=uid, iid=imageid)
+        db.session.add(stamp)
+        db.session.commit()
+
         catalogName = request.form.get('catalogName')
         catalogNumber = request.form.get('catalogNumber')
         catalogYear = request.form.get('catalogYear')
@@ -130,34 +148,25 @@ def addStampFile():
         scottNumber = request.form.get('scottNumber')
         verientNumber = request.form.get('verientNumber')
 
-        # print(title, country, year, stampNumber, faceValue, info, catalogName, catalogNumber, catalogYear, price, scottNumber, verientNumber)
+        catalog = CatalogModel(name=catalogName, number=catalogNumber, year=catalogYear, price=price, scott_number=scottNumber, verient_number=verientNumber, uid=uid, iid=imageid)
+        db.session.add(catalog)
+        db.session.commit()
 
-        #convert string data to numpy array
+        dtime = time.asctime(time.localtime(time.time()))
+
+        job = JobModel(datetime=str(dtime), jobtype='Stamp Added', uid=uid)
+        db.session.add(job)
+        db.session.commit()
+
         npimg = np.fromstring(filestr, np.uint8)
-        # convert numpy array to image
         img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+        cv2.imwrite(DIR_FOR_IMAGES+ filename, img)
 
-        # data = request.get_json()
-        # print(data)
-        # cv2.imshow('',img)
-        # cv2.waitKey(0)
-
-        # data = request.files['file']
-
-        # print("Here")
-
-        # data.save('yumpum.png')
-
-        # uid = current_user.id
-
-        # dtime = time.asctime(time.localtime(time.time()))
-
-        # stamp = StampModel()
-
-
-        # job = JobModel(datetime=str(dtime), jobtype='Stamp Added', uid=uid)
-        # db.session.add(job)
-        # db.session.commit()
+        ses.add_image(DIR_FOR_IMAGES + filename)
+        # print(es.indices.exists(DIR_FOR_IMAGES + filename))
+        # print(es.indices.exists([filename]))
+        images = [filename]
+        print(es.indices.exists('images'))
 
         return {'return': 'stamp added'}
 

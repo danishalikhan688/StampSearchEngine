@@ -658,7 +658,7 @@ class SignatureES(SignatureDatabaseBase):
     """Elasticsearch driver for image-match
     """
 
-    def __init__(self, es, index='images', doc_type='image', timeout='10s', size=100,
+    def __init__(self, es, index='images', doc_type='image', timeout='60s', size=100,
                 *args, **kwargs):
         """Extra setup for Elasticsearch
         Args:
