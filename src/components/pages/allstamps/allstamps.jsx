@@ -1,12 +1,47 @@
-import React, { useContext, useState } from "react";
 import Context from '../../../context/Context'
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import { Link } from "react-router-dom"
 import "./assets/allstamps.css"
+import { globalVars } from '../../../util/common';
+import { useHistory } from "react-router";
+import React, { useState, useEffect, useContext } from "react";
+
 const AllStamps = () => {
+  const history = useHistory();
+  
+  useEffect(() => {
+    const checkAuth = async () => {
+
+      var response = await fetch(globalVars.urls.baseURL + '/checkAuth')
+      var data = await response.json()
+
+      if (data.return === 'not authenticated') {
+        history.push('/registration')
+      }
+    }
+
+    checkAuth()
+
+  }, [])
+
   const { stamps } = useContext(Context);
+  useEffect(() => {
+    const allStamps = async () => {
+
+      var response = await fetch(globalVars.urls.baseURL + '/allStamps')
+      var data = await response.json()
+
+      const info = data.info
+      const images = data.stampImages
+      console.log(info)
+      console.log(images)
+    }
+
+    allStamps()
+  }, [])
+  
   return (
     <Container fluid>
       <form  >
@@ -70,4 +105,3 @@ const AllStamps = () => {
   );
 };
 export default AllStamps;
-

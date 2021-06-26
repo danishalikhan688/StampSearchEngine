@@ -1,13 +1,14 @@
 from flask import Flask, request, jsonify
 from flask import Flask,render_template,request,redirect
 from flask_login import login_required, current_user, login_user, logout_user
-from models import UserModel,db,login, JobModel, StampModel, CatalogModel, ImageModel
-import time
+from models import UserModel,db,login, JobModel, StampCatalogImageModel
 # import requests
+import time
 import cv2
 import numpy as np
 from elasticsearch import Elasticsearch
 import lib_file
+import base64
 
 app = Flask(__name__)
 app.secret_key = 'xyz'
@@ -15,13 +16,13 @@ DIR_FOR_IMAGES = '/home/jawad/Desktop/StampSearchEngine/src/backend/ImagesFromUs
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stampSearchEngine.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+es = Elasticsearch([{'host':'localhost','port':9200}])
+ses = lib_file.SignatureES(es)
  
 db.init_app(app)
 login.init_app(app)
 login.login_view = 'login'
-
-es = Elasticsearch([{'host':'localhost','port':9200}])
-ses = lib_file.SignatureES(es)
 
 @app.before_first_request
 def create_all():
@@ -111,7 +112,27 @@ def logout():
 
     return {'return': 'logged out'}
 
+@app.route('/allStamps' ,methods=['GET'])
+@login_required
+def allStamps():
+    uid = current_user.id
+
+    rows = StampCatalogImageModel.query.filter_by(uid=uid).all()
+    info = []
+    stampImages = []
+
+    for row in rows:
+        stampDict = {'stamp_country': row.stamp_country, 'stamp_year': row.stamp_year, 'stamp_number':row.stamp_number, 'stamp_face_value': row.stamp_face_value, 'stamp_info':row.stamp_info, 'catalog_name':row.catalog_name, 'catalog_year': row.catalog_year, 'catalog_number':row.catalog_number, 'catalog_price':row.catalog_price, 'catalog_scott_number':row.catalog_scott_number, 'catalog_verient_number':row.catalog_verient_number, 'image_name':row.image_name, 'image_type':row.image_type}
+        info.append(stampDict)
+        filename = DIR_FOR_IMAGES + row.image_name
+        with open(filename, "rb") as image_file:
+            encoded_string = base64.b64encode(image_file.read())
+            stampImages.append(encoded_string)
+
+    return {'info': info, 'stampImages': stampImages}
+
 @app.route('/addStampFile', methods=['POST', 'GET'])
+@login_required
 def addStampFile():
 
     if request.method == 'GET':
@@ -123,12 +144,15 @@ def addStampFile():
         fieldName = request.form.get('fieldName')
         uid = current_user.id
 
-        image = ImageModel(image_name=filename, image_type=fieldName)
-        db.session.add(image)
-        db.session.commit()
+        if StampCatalogImageModel.query.filter_by(image_name=filename, image_type=fieldName).first():
+            return {'return':'image already present'}
 
-        obj = ImageModel.query.filter_by(image_name=filename).one()
-        imageid = obj.iid
+        # image = ImageModel(image_name=filename, image_type=fieldName)
+        # db.session.add(image)
+        # db.session.commit()
+
+        # obj = ImageModel.query.filter_by(image_name=filename).one()
+        # imageid = obj.iid
 
         title = request.form.get('title')
         country = request.form.get('country')
@@ -136,11 +160,6 @@ def addStampFile():
         stampNumber = request.form.get('stampNumber')
         faceValue = request.form.get('faceValue')
         info = request.form.get('info')
-
-        stamp = StampModel(title=title, country=country, year=year, stamp_number=stampNumber, face_value=faceValue, info=info, uid=uid, iid=imageid)
-        db.session.add(stamp)
-        db.session.commit()
-
         catalogName = request.form.get('catalogName')
         catalogNumber = request.form.get('catalogNumber')
         catalogYear = request.form.get('catalogYear')
@@ -148,8 +167,8 @@ def addStampFile():
         scottNumber = request.form.get('scottNumber')
         verientNumber = request.form.get('verientNumber')
 
-        catalog = CatalogModel(name=catalogName, number=catalogNumber, year=catalogYear, price=price, scott_number=scottNumber, verient_number=verientNumber, uid=uid, iid=imageid)
-        db.session.add(catalog)
+        stampCatalog = StampCatalogImageModel(stamp_title=title, stamp_country=country, stamp_year=year, stamp_number=stampNumber, stamp_face_value=faceValue, stamp_info=info, catalog_name=catalogName, catalog_number=catalogNumber, catalog_year=catalogYear, catalog_price=price, catalog_scott_number=scottNumber, catalog_verient_number=verientNumber, image_name=filename, image_type=fieldName, uid=uid)
+        db.session.add(stampCatalog)
         db.session.commit()
 
         dtime = time.asctime(time.localtime(time.time()))
@@ -165,8 +184,8 @@ def addStampFile():
         ses.add_image(DIR_FOR_IMAGES + filename)
         # print(es.indices.exists(DIR_FOR_IMAGES + filename))
         # print(es.indices.exists([filename]))
-        images = [filename]
-        print(es.indices.exists('images'))
+        # images = [filename]
+        # print(es.indices.exists('images'))
 
         return {'return': 'stamp added'}
 

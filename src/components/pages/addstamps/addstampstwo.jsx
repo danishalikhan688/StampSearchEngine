@@ -161,6 +161,9 @@ const AddStamptwo = () => {
     if(data.return === 'stamp added'){
       alert("Stamp Added!")
     }
+    else {
+      alert('Image with the same name and type already exists')
+    }
 
     // }
     // else {

@@ -33,40 +33,46 @@ class JobModel(db.Model):
 
     uid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-class StampModel(db.Model):
-    __tablename__ = 'stampinfo'
+class StampCatalogImageModel(db.Model):
+    __tablename__ = 'stampCatalogImageinfo'
 
-    sid = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), nullable=True)
-    country = db.Column(db.String(80), nullable=True)
-    year = db.Column(db.Integer, nullable=True)
+    scid = db.Column(db.Integer, primary_key=True)
+    stamp_title = db.Column(db.String(80), nullable=True)
+    stamp_country = db.Column(db.String(80), nullable=True)
+    stamp_year = db.Column(db.Integer, nullable=True)
     stamp_number = db.Column(db.String(80), nullable=True)
-    face_value = db.Column(db.String(80), nullable=True)
-    info = db.Column(db.String(200), nullable=True)
-
-    iid = db.Column(db.Integer, db.ForeignKey('images.iid'), nullable=False)
-    uid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-
-class CatalogModel(db.Model):
-    __tablename__ = 'cataloginfo'
-
-    cid = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=True)
-    number = db.Column(db.Integer, nullable=True)
-    year = db.Column(db.Integer, nullable=True)
-    price = db.Column(db.Float, nullable=True)
-    scott_number = db.Column(db.Integer, nullable=True)
-    verient_number = db.Column(db.Integer, nullable=True)
-
-    iid = db.Column(db.Integer, db.ForeignKey('images.iid'), nullable=False)
-    uid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-
-class ImageModel(db.Model):
-    __tablename__ = 'images'
-
-    iid = db.Column(db.Integer, primary_key=True)
+    stamp_face_value = db.Column(db.String(80), nullable=True)
+    stamp_info = db.Column(db.String(200), nullable=True)
+    catalog_name = db.Column(db.String(80), nullable=True)
+    catalog_number = db.Column(db.Integer, nullable=True)
+    catalog_year = db.Column(db.Integer, nullable=True)
+    catalog_price = db.Column(db.Float, nullable=True)
+    catalog_scott_number = db.Column(db.Integer, nullable=True)
+    catalog_verient_number = db.Column(db.Integer, nullable=True)
     image_name = db.Column(db.String(80), nullable=True)
     image_type = db.Column(db.String(80), nullable=True)
+    uid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+# class CatalogModel(db.Model):
+#     __tablename__ = 'cataloginfo'
+
+#     cid = db.Column(db.Integer, primary_key=True)
+#     catalog_name = db.Column(db.String(80), nullable=True)
+#     catalog_number = db.Column(db.Integer, nullable=True)
+#     catalog_year = db.Column(db.Integer, nullable=True)
+#     catalog_price = db.Column(db.Float, nullable=True)
+#     catalog_scott_number = db.Column(db.Integer, nullable=True)
+#     catalog_verient_number = db.Column(db.Integer, nullable=True)
+
+#     iid = db.Column(db.Integer, db.ForeignKey('images.iid'), nullable=False)
+#     uid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+# class ImageModel(db.Model):
+#     __tablename__ = 'images'
+
+#     iid = db.Column(db.Integer, primary_key=True)
+#     image_name = db.Column(db.String(80), nullable=True)
+#     image_type = db.Column(db.String(80), nullable=True)
  
 @login.user_loader
 def load_user(id):
