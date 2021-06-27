@@ -131,6 +131,36 @@ def allStamps():
 
     return {'info': info, 'stampImages': stampImages}
 
+@app.route('/searchStamp', methods=['POST', 'GET'])
+@login_required
+def searchStamp():
+    filestr = request.files['myFile'].read()
+    filename = request.form.get('filename')
+    fieldName = request.form.get('fieldName')
+    # title = request.form.get('title')
+    uid = current_user.id
+
+    # print(filename, fieldName, title)
+    # npimg = np.fromstring(filestr, np.uint8)
+    # img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+
+    data = ses.search_image(DIR_FOR_IMAGES + filename)
+    paths = []
+    searchImages = []
+
+    for i in data:
+        if i['path'] not in paths:
+            filename = i['path']
+            with open(filename, "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read())
+                searchImages.append(encoded_string)
+            paths.append(i['path'])
+    
+    print(paths)
+    # print(searchImages)
+
+    return {'searchImages': searchImages}
+
 @app.route('/addStampFile', methods=['POST', 'GET'])
 @login_required
 def addStampFile():

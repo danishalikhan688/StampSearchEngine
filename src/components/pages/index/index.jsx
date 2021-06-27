@@ -66,7 +66,18 @@ const Index = () => {
     formData.append("myFile", fileData.file)
     formData.append("filename", fileData.file.name)
     formData.append("fieldName", fileData.fieldName)
-    formData.append("title", values['title'])
+    // formData.append("title", values['title'])
+
+    // console.log(formData)
+
+    var response = await fetch(globalVars.urls.baseURL + '/searchStamp', {
+      method: 'post',
+      body: formData,
+    })
+
+    var data = await response.json()
+    const images = data.searchImages
+    console.log(images)
 
     //  var response = await fetch(globalVars.urls.baseURL + '/addStampFile', {
     //   method: 'post',
