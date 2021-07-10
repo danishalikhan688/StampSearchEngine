@@ -122,7 +122,7 @@ def allStamps():
     stampImages = []
 
     for row in rows:
-        stampDict = {'stamp_country': row.stamp_country, 'stamp_year': row.stamp_year, 'stamp_number':row.stamp_number, 'stamp_face_value': row.stamp_face_value, 'stamp_info':row.stamp_info, 'catalog_name':row.catalog_name, 'catalog_year': row.catalog_year, 'catalog_number':row.catalog_number, 'catalog_price':row.catalog_price, 'catalog_scott_number':row.catalog_scott_number, 'catalog_verient_number':row.catalog_verient_number, 'image_name':row.image_name, 'image_type':row.image_type}
+        stampDict = {'stamp_title':row.stamp_title,'stamp_country': row.stamp_country, 'stamp_year': row.stamp_year, 'stamp_number':row.stamp_number, 'stamp_face_value': row.stamp_face_value, 'stamp_info':row.stamp_info, 'catalog_name':row.catalog_name, 'catalog_year': row.catalog_year, 'catalog_number':row.catalog_number, 'catalog_price':row.catalog_price, 'catalog_scott_number':row.catalog_scott_number, 'catalog_verient_number':row.catalog_verient_number, 'image_name':row.image_name, 'image_type':row.image_type}
         info.append(stampDict)
         filename = DIR_FOR_IMAGES + row.image_name
         with open(filename, "rb") as image_file:
@@ -137,6 +137,7 @@ def searchStamp():
     filestr = request.files['myFile'].read()
     filename = request.form.get('filename')
     fieldName = request.form.get('fieldName')
+    # print(filename)
     # title = request.form.get('title')
     uid = current_user.id
 
@@ -146,20 +147,36 @@ def searchStamp():
 
     data = ses.search_image(DIR_FOR_IMAGES + filename)
     paths = []
+    imgPath = []
     searchImages = []
+    info = []
+
+    print(data)
 
     for i in data:
-        if i['path'] not in paths:
+        if i['path'] in paths:
+            pass
+        else:
             filename = i['path']
+            paths.append(filename)
+            imgPath.append(str(filename).split('/')[-1])
+            # print(str(filename).split('/')[-1])
             with open(filename, "rb") as image_file:
                 encoded_string = base64.b64encode(image_file.read())
                 searchImages.append(encoded_string)
-            paths.append(i['path'])
+            # paths.append(str(filename).split('/')[-1])
     
-    print(paths)
+    print(len(searchImages))
+    print(imgPath)
     # print(searchImages)
+    for i in imgPath:
+        imgToSearch = i
+        rows = StampCatalogImageModel.query.filter_by(uid=uid, image_name=imgToSearch).all()
+        for row in rows:
+            stampDict = {'stamp_title':row.stamp_title,'stamp_country': row.stamp_country, 'stamp_year': row.stamp_year, 'stamp_number':row.stamp_number, 'stamp_face_value': row.stamp_face_value, 'stamp_info':row.stamp_info, 'catalog_name':row.catalog_name, 'catalog_year': row.catalog_year, 'catalog_number':row.catalog_number, 'catalog_price':row.catalog_price, 'catalog_scott_number':row.catalog_scott_number, 'catalog_verient_number':row.catalog_verient_number, 'image_name':row.image_name, 'image_type':row.image_type}
+            info.append(stampDict)
 
-    return {'searchImages': searchImages}
+    return {'info': info, 'searchImages': searchImages}
 
 @app.route('/addStampFile', methods=['POST', 'GET'])
 @login_required

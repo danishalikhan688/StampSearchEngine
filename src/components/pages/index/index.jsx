@@ -77,6 +77,8 @@ const Index = () => {
 
     var data = await response.json()
     const images = data.searchImages
+    const info = data.info
+    console.log(info)
     console.log(images)
 
     //  var response = await fetch(globalVars.urls.baseURL + '/addStampFile', {
