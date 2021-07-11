@@ -5,8 +5,12 @@
     font-size: 76px;
     cursor: pointer;
     color:#6c757d;
-    height: 116px;
+    height: 145px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 @media screen and (max-width: 680px) {
     .btn-search{
         width: 15%;

@@ -156,6 +156,8 @@ export const State = (props) => {
             verientNumber: "SDF323"
         },
     ])
+    const [editStampData, setEditStampData] = useState({})
+    const [edit, setEdit] = useState(false)
     const [addSideBarClass, setAddSideBarClass] = useState(true)
     const menuClick = (pagetitle) => {
         dispatch({
@@ -192,6 +194,10 @@ export const State = (props) => {
             colors,
             setStamps,
             stamps,
+            editStampData,
+             setEditStampData,
+             edit,
+             setEdit,
 
 
             // new  
