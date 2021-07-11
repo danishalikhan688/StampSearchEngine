@@ -112,7 +112,7 @@ const Index = () => {
       <Row className=" pt-2 ">
         <Col lg={12}>
           <ol className="breadcrumb mb-4 d-flex justify-content-center">
-            <h1 className="breadcrumb-item text-center active ">  Search Engine</h1>
+            <h1 className="breadcrumb-item text-center active ">Search Engine</h1>
           </ol>
         </Col>
         <Col className="d-flex" lg={12}>

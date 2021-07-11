@@ -98,6 +98,7 @@ export const State = (props) => {
     const [state, dispatch] = useReducer(Reducer, initialState);
     const [count, setCount] = useState(0)
     const [currency, setCurrency] = useState("USD")
+    const [user, setUser] = useState("")
 
     const [hideCurrencyBar, setHideCurrencyBar] = useState({})
     const [checked, setChecked] = useState(true);
@@ -198,6 +199,8 @@ export const State = (props) => {
              setEditStampData,
              edit,
              setEdit,
+             user, 
+             setUser,
 
 
             // new  

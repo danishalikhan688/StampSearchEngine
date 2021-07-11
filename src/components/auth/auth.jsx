@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import "./assets/login.css";
 import { Link } from "react-router-dom"
-import { useHistory } from "react-router"; 
+import { useHistory } from "react-router";
 
 import { globalVars } from '../../util/common';
 export const Login = () => {
@@ -25,8 +25,6 @@ export const Login = () => {
         checkAuth()
 
     }, [])
-
-
 
     const handleSubmit = async (evt) => {
         evt.preventDefault();
@@ -73,12 +71,12 @@ export const Login = () => {
                                             </div>
                                             <div className="form-group d-flex   align-items-center justify-content-center mt-4 mb-0">
                                                 <input type="submit" className="btn btn-primary auth-login-btn" value="Submit" />
-                                                 
+
                                             </div>
                                         </form>
                                         <div className="card-footer text-center ">
-                                        <div className="small">    <Link to="/registration" className=" "  >  Create a new account   </Link> </div>
-                                    </div>
+                                            <div className="small">    <Link to="/registration" className=" "  >  Create a new account   </Link> </div>
+                                        </div>
                                     </div>
 
                                 </div>

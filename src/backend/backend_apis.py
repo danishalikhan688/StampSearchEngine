@@ -243,7 +243,7 @@ def addStampFile():
         fieldName = request.form.get('fieldName')
         uid = current_user.id
 
-        if StampCatalogImageModel.query.filter_by(image_name=filename, image_type=fieldName).first():
+        if StampCatalogImageModel.query.filter_by(uid=uid, image_name=filename).first():
             return {'return':'image already present'}
 
         title = request.form.get('title')

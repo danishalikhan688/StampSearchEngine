@@ -34,7 +34,8 @@ const AddStamps = () => {
     )
   }
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (e) => {
+    e.preventDefault()
     var response = await fetch(globalVars.urls.baseURL + '/updateStamp', {
       method: 'post',
       headers: {
