@@ -8,9 +8,15 @@
 # testing
 /coverage
 
+<<<<<<< HEAD
 *.db
 src/backend/ImagesFromUser
 src/backend/~/*
+=======
+#db
+stampSearchEngine.db
+
+>>>>>>> ee5199b8ebe9908b79e25711c2595b54f57ad886
 # production
 /build
 
