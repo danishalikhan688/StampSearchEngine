@@ -18,14 +18,16 @@ function App() {
 
     <Router>
       <Switch>
-      <Route exact path="/login" children={<Login/>} />
-      <Route exact path="/registration" children={<Registration/>} />
+        <Route exact path="/login" children={<Login />} />
+        <Route exact path="/registration" children={<Registration />} />
         <div className={addSideBarClass ? "sb-nav-fixed " : "sb-nav-fixed sb-sidenav-toggled"}  >
           <Navbar />
           <div id="layoutSidenav">
             <Sidebar />
             <div id="layoutSidenav_content">
               <main>
+                <Route exact path="/login" children={<Login />} />
+                <Route exact path="/registration" children={<Registration />} />
                 <Route exact path="/" children={<Index />} />
                 <Route exact path="/addstamps" children={<AddStamps />} />
                 <Route exact path="/addstampstwo" children={<AddStamptwo />} />

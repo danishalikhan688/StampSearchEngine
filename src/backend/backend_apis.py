@@ -10,9 +10,9 @@ from PIL import Image
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, resources={r'/*':{'origin': '*'}})
 app.secret_key = 'xyz'
-DIR_FOR_IMAGES = '/home/jawad/Desktop/StampSearchEngine/src/backend/ImagesFromUser/'
+DIR_FOR_IMAGES = '~/StampSearchEngine/src/backend/ImagesFromUser/'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stampSearchEngine.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
