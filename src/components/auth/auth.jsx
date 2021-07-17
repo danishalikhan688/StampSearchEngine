@@ -14,7 +14,7 @@ export const Login = () => {
     useEffect(() => {
         const checkAuth = async () => {
 
-            var response = await fetch(globalVars.urls.baseURL + '/checkAuth')
+            var response = await fetch(globalVars.urls.baseURL + '/checkAuth', {credentials:'include'})
             var data = await response.json()
 
             if (data.return === 'already authenticated') {

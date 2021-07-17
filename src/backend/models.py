@@ -21,6 +21,10 @@ class UserModel(UserMixin, db.Model):
     def check_password(self,password):
         return check_password_hash(self.password_hash,password)
 
+    # def is_authenticated(self):
+    #     """Return True if the user is authenticated."""
+    #     return self.authenticated
+
     def return_id(self, id):
         return id
 

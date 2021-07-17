@@ -1,26 +1,28 @@
 from flask import Flask, request, jsonify
 from flask import Flask,render_template,request,redirect
-from flask_login import login_required, current_user, login_user, logout_user
+from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from models import UserModel,db,login, JobModel, StampCatalogImageModel
 import time
 from elasticsearch import Elasticsearch
 import lib_file
 import base64
 from PIL import Image
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 app.secret_key = 'xyz'
 DIR_FOR_IMAGES = '/home/jawad/Desktop/StampSearchEngine/src/backend/ImagesFromUser/'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stampSearchEngine.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-es = Elasticsearch([{'host':'localhost','port':9200}])
-ses = lib_file.SignatureES(es)
- 
 db.init_app(app)
 login.init_app(app)
 login.login_view = 'login'
+
+es = Elasticsearch([{'host':'localhost','port':9200}])
+ses = lib_file.SignatureES(es)
 
 @app.before_first_request
 def create_all():
@@ -65,9 +67,6 @@ def register():
 
 @app.route('/login', methods = ['POST'])
 def login():
-    if current_user.is_authenticated:
-        return {'return': 'already authenticated'}
-    
     if request.method == 'POST':
         data = request.get_json()
         email = data['email']
@@ -76,7 +75,6 @@ def login():
         user = UserModel.query.filter_by(email = email).first()
             
         if user is not None and user.check_password(password):
-
             login_user(user)
             
             uid = user.id
