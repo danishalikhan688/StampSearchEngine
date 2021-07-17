@@ -30,6 +30,7 @@ def create_all():
 
 @app.route('/checkAuth' ,methods=['GET'])
 def checkAuth():
+    print(current_user.is_authenticated)
     if current_user.is_authenticated:
         return {'return': 'already authenticated'}
     else:
@@ -63,6 +64,8 @@ def register():
         db.session.add(job)
         db.session.commit()
 
+        print(current_user.is_authenticated)
+
         return {'return': 'registered'}
 
 @app.route('/login', methods = ['POST'])
@@ -87,6 +90,8 @@ def login():
             job = JobModel(datetime=str(dtime), jobtype='Login', uid=uid)
             db.session.add(job)
             db.session.commit()
+
+            print(current_user.is_authenticated)
 
             return {'return': 'logged in', 'firstName': firstName}
         else:
