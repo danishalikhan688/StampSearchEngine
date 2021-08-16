@@ -10,9 +10,10 @@ from PIL import Image
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, resources={r'/*':{'origin': '*'}})
+CORS(app, supports_credentials=True)
+#CORS(app, supports_credentials=True, resources={r'/*':{'origin': 'http://hwsrv-817525.hostwindsdns.com'}}, expose_headers="*")
 app.secret_key = 'xyz'
-DIR_FOR_IMAGES = '~/StampSearchEngine/src/backend/ImagesFromUser/'
+DIR_FOR_IMAGES = '/root/StampSearchEngine/src/backend/ImagesFromUser/'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stampSearchEngine.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -29,6 +30,7 @@ def create_all():
     db.create_all()
 
 @app.route('/checkAuth' ,methods=['GET'])
+#@cross_origin(supports_credentials=True, resources={r'/*':{'origin': 'http://hwsrv-817525.hostwindsdns.com'}}, expose_headers="*")
 def checkAuth():
     print(current_user.is_authenticated)
     if current_user.is_authenticated:
@@ -69,6 +71,7 @@ def register():
         return {'return': 'registered'}
 
 @app.route('/login', methods = ['POST'])
+#@cross_origin(supports_credentials=True, resources={r'/*':{'origin': 'http://hwsrv-817525.hostwindsdns.com'}}, expose_headers="*")
 def login():
     if request.method == 'POST':
         data = request.get_json()
@@ -158,7 +161,7 @@ def updateStamp():
 
     return {'return': 'updated'}
 
-@app.route('/allStamps' ,methods=['GET'])
+@app.route('/allStamps' ,methods=['GET', 'POST'])
 @login_required
 def allStamps():
     uid = current_user.id
@@ -166,17 +169,18 @@ def allStamps():
     rows = StampCatalogImageModel.query.filter_by(uid=uid).all()
     info = []
     stampImages = []
+    print("HERE 1")
 
     for row in rows:
         stampDict = {'scid':row.scid,'stamp_title':row.stamp_title,'stamp_country': row.stamp_country, 'stamp_year': row.stamp_year, 'stamp_number':row.stamp_number, 'stamp_face_value': row.stamp_face_value, 'stamp_info':row.stamp_info, 'catalog_name':row.catalog_name, 'catalog_year': row.catalog_year, 'catalog_number':row.catalog_number, 'catalog_price':row.catalog_price, 'catalog_scott_number':row.catalog_scott_number, 'catalog_verient_number':row.catalog_verient_number, 'image_name':row.image_name, 'image_type':row.image_type}
         info.append(stampDict)
         filename = DIR_FOR_IMAGES + row.image_name
         with open(filename, "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read())
+            encoded_string = base64.b64encode(image_file.read()).decode('latin1')
             stampImages.append(encoded_string)
-
+ 
     dtime = time.asctime(time.localtime(time.time()))
-
+    print("HERE 2")   
     job = JobModel(datetime=str(dtime), jobtype='All Stamps Viewed', uid=uid)
     db.session.add(job)
     db.session.commit()
@@ -211,7 +215,7 @@ def searchStamp():
             imgPath.append(str(filename).split('/')[-1])
 
             with open(filename, "rb") as image_file:
-                encoded_string = base64.b64encode(image_file.read())
+                encoded_string = base64.b64encode(image_file.read()).decode('latin1')
                 searchImages.append(encoded_string)
 
     for i in imgPath:

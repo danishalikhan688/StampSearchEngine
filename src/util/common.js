@@ -1,5 +1,5 @@
 export const globalVars = {
     urls: {
-        baseURL: "http://localhost:5000/",
+        baseURL: "http://hwsrv-817525.hostwindsdns.com/api",
     }
 };
