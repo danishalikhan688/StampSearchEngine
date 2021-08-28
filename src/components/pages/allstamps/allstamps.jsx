@@ -22,7 +22,7 @@ const AllStamps = () => {
         history.push('/registration')
       }
     }
-    checkAuth()
+     checkAuth()
   }, [])
 
   const { setEdit, setEditStampData } = useContext(Context);

@@ -69,7 +69,7 @@ const Index = () => {
         history.push('/registration')
       }
     }
-    checkAuth()
+     checkAuth()
   }, [])
 
   const onSubmit = async (values) => {

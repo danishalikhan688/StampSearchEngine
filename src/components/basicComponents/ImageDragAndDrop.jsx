@@ -1,9 +1,11 @@
-import React, { useRef } from "react";
+import React, { useRef,useState } from "react";
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import { FileDrop } from 'react-file-drop'
 const ImageDragAndDrop = (props) => {
+  const [displayFileName , setDisplayFIleName] = useState(" Drop your Stamp here!")
   const handleUplpoad = (files => {
+    setDisplayFIleName(files[0].name)
     props.handleUpload(files[0], props.fieldName)
   });
 
@@ -29,7 +31,7 @@ const ImageDragAndDrop = (props) => {
           // onDragLeave={(event) => console.log("image uploaded successfully")} 
           onDrop={(files, event) => handleUplpoad(files)}
         >
-          Drop your Stamp here!
+      {displayFileName}   
         </FileDrop>
         <hr />
         <input
