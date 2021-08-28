@@ -144,7 +144,7 @@ const AddStamptwo = () => {
     setLoading(false)
     }
     else {
-      alert("Please fill required field and upload a single image only!")
+      alert("Please fill required fields and upload a single image only!")
     }
   };
   return (
@@ -163,7 +163,7 @@ const AddStamptwo = () => {
           catalogName: "",
           catalogNumber: "",
           catalogYear: 1900,
-          price: "",
+          price: 1,
           scottNumber: "",
           verientNumber: "",
         }}
